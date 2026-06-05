@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage ('checkout from github') {
+            steps {
+                git branch: 'feature', url: 'https://github.com/Nandeesh94/spring-boot-mongo-docker-kkfunda-1.git'
+            }
+        }
+        stage ('setup kubeconfig') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                                  credentialsId: 'aws-eks-cred']]) {
+                    sh '''
+                        aws eks update-kubeconfig --region us-east-1 --name Nandeesh-cluster
+                    '''
+                }
+            }
+        }
+        stage ('Deploy to kubernetes') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                                  credentialsId: 'aws-eks-cred']]) {
+                    sh '''
+                        kubectl apply -f springappmongo.yaml --validate=false
+                    '''
+                }
+            }
+        }
+        stage ('verify pods and service') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                                  credentialsId: 'aws-eks-cred']]) {
+                    sh '''
+                        kubectl get pods
+                        kubectl get svc
+                    '''
+                }
+            }
+        }
+    }
+}    
