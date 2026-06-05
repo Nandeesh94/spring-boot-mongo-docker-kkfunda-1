@@ -61,7 +61,7 @@ spec:
     spec:
       containers:
       - name: springappcontainer
-        image: nandu90199/netflix-clone
+        image: nandu90199/netflix-clone:9.0.113
         ports:
         - containerPort: 8080
         env:
