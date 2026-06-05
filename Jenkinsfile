@@ -15,7 +15,7 @@ pipeline {
             steps {
                 git branch: 'feature', 
                     credentialsId: '33e5e605-33c2-45d2-8c7d-4a94a80eb1ef', 
-                    url: 'https://github.com/KandlaguntaVenkataSivaNiranjanReddy/spring-boot-mongo-docker-kkfunda.git'
+                    url: 'https://github.com/Nandeesh94/spring-boot-mongo-docker-kkfunda-1.git'
             }
         }
 
